@@ -9,7 +9,7 @@ routes.post("/login", async (req, res, next) => {
   const { email, password } = req.body.userData;
 
   const user = await User.findOne({ email });
-
+  console.log(user);
   if (email === undefined || password === undefined) {
     res.status(401).json({
       success: false,
@@ -29,6 +29,7 @@ routes.post("/login", async (req, res, next) => {
       token: generationToken,
     });
   } else {
+    console.log("aqui");
     res.status(401).json({
       success: false,
       code: "API_ERROR_01",
@@ -38,12 +39,8 @@ routes.post("/login", async (req, res, next) => {
 });
 
 routes.get("/verifyToken", (req, res, next) => {
-  console.log(req.headers["authorization"]);
   let token = req.headers["authorization"];
-  console.log(token);
-  console.log(jwtConfig.JWT_KEY);
   jwt.verify(token, jwtConfig.JWT_KEY, (err, decode) => {
-    console.log(err);
     if (!err) {
       res.json({
         success: true,

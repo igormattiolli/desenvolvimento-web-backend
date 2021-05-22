@@ -9,7 +9,6 @@ routes.post("/login", async (req, res, next) => {
   const { email, password } = req.body.userData;
 
   const user = await User.findOne({ email });
-  console.log(user);
   if (email === undefined || password === undefined) {
     res.status(401).json({
       success: false,

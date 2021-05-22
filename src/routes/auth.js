@@ -13,7 +13,7 @@ routes.post("/login", async (req, res, next) => {
   if (email === undefined || password === undefined) {
     res.status(401).json({
       success: false,
-      code: "DD101_API_ERROR_01",
+      code: "API_ERROR_01",
       message: "E-mail e/ou senha invalida",
     });
   } else if (user && bcrypt.compareSync(password, user.password)) {
@@ -22,7 +22,7 @@ routes.post("/login", async (req, res, next) => {
       email: user.email,
     };
     let generationToken = jwt.sign(tokenData, jwtConfig.JWT_KEY, {
-      expiresIn: "1m",
+      expiresIn: "60m",
     });
     return res.json({
       success: true,
@@ -31,22 +31,24 @@ routes.post("/login", async (req, res, next) => {
   } else {
     res.status(401).json({
       success: false,
-      code: "DD101_API_ERROR_01",
+      code: "API_ERROR_01",
       message: "E-mail e/ou senha invalida",
     });
   }
 });
 
-routes.get("/verifytoken", (req, res, next) => {
+routes.get("/verifyToken", (req, res, next) => {
   console.log(req.headers["authorization"]);
   let token = req.headers["authorization"];
   console.log(token);
   console.log(jwtConfig.JWT_KEY);
   jwt.verify(token, jwtConfig.JWT_KEY, (err, decode) => {
+    console.log(err);
     if (!err) {
       res.json({
         success: true,
-        message: "toke is valid",
+        message: "token is valid",
+        data: decode,
       });
     } else {
       res.status(401).json({

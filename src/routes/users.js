@@ -19,7 +19,7 @@ routes.delete("/:id", async (req, res) => {
 });
 
 routes.post("/register", async (req, res, next) => {
-  const { name, email, password } = req.body.userData;
+  const { email, password } = req.body.userData;
 
   const hash = bcrypt.hashSync(password, config.SALT_ROUNDS);
 
@@ -39,7 +39,6 @@ routes.post("/register", async (req, res, next) => {
     }
   };
   const dataToInsert = await User.create({
-    name,
     email,
     password: hash,
   })
